@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
   <parameters>
     <parameter name="version" required="true" />
@@ -10,8 +10,8 @@
       file-version="${version}"
       company-name="sunaiyun"
       copyright="MIT License">
-      <include path="windows-build/x86/dist/CubeProbe-x86.exe" />
-      <include path="windows-build/x64/dist/CubeProbe-x64.exe" />
+      <include path="x86/dist/CubeProbe-x86.exe" />
+      <include path="x64/dist/CubeProbe-x64.exe" />
       <for-each>
         <authenticode-sign />
       </for-each>
