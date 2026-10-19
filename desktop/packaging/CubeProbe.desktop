@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=方块探针
+Comment=Minecraft Java / Bedrock 服务器查询
+Encoding=UTF-8
+Terminal=false
+Categories=Network;Game;Utility;
+StartupNotify=true
+Exec=sh -c 'cd "$(dirname "$1")" && exec ./CubeProbe' dummy %k
+Icon=applications-games

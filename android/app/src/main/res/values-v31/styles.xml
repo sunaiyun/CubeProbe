@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.CubeProbe" parent="Theme.CubeProbe.Base">
+        <item name="android:windowSplashScreenBackground">@color/bg</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_cube</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/surface</item>
+        <item name="android:windowSplashScreenAnimationDuration">350</item>
+    </style>
+</resources>

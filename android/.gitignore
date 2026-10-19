@@ -1,0 +1,16 @@
+# Build output
+build/
+dist/*.idsig
+
+# Signing material stays local
+signing/
+
+# IDE / OS noise
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc

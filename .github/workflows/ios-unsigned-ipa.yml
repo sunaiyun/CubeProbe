@@ -1,0 +1,64 @@
+name: Build unsigned iOS IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'ios/**'
+      - '.github/workflows/ios-unsigned-ipa.yml'
+
+jobs:
+  build:
+    name: Build CubeProbe (unsigned IPA)
+    runs-on: macos-15
+    timeout-minutes: 30
+
+    defaults:
+      run:
+        working-directory: ios
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Build device app (no signing)
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project CubeProbe.xcodeproj \
+            -scheme CubeProbe \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            DEVELOPMENT_TEAM="" \
+            PROVISIONING_PROFILE_SPECIFIER="" \
+            build
+
+      - name: Package unsigned IPA
+        run: |
+          set -euo pipefail
+          APP="$RUNNER_TEMP/DerivedData/Build/Products/Release-iphoneos/CubeProbe.app"
+          test -d "$APP"
+          mkdir -p "$RUNNER_TEMP/Payload"
+          cp -R "$APP" "$RUNNER_TEMP/Payload/"
+          (cd "$RUNNER_TEMP" && zip -qry CubeProbe-unsigned.ipa Payload)
+          cp "$RUNNER_TEMP/CubeProbe-unsigned.ipa" .
+          ls -lh CubeProbe-unsigned.ipa
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CubeProbe-unsigned-ipa
+          path: ios/CubeProbe-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 14

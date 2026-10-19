@@ -1,0 +1,32 @@
+# Build output
+android/build/
+android/dist/
+android/signing/
+desktop/build/
+desktop/dist/
+desktop/windows-build/
+ios/dist/
+**/__pycache__/
+*.pyc
+*.pyo
+*.spec.bak
+
+# IDE / OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local secrets
+*.jks
+*.keystore
+github_token.txt
+
+# Packages
+*.apk
+*.idsig
+*.exe
+*.ipa
+*.pyz
+*.dmg

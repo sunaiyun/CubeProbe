@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">方块探针</string>
+    <string name="app_tagline">MINECRAFT SERVER CHECKER</string>
+    <string name="version_badge">JAVA · BEDROCK</string>
+    <string name="direct_badge">直连查询</string>
+
+    <string name="hero_eyebrow">SERVER PULSE</string>
+    <string name="hero_title">听见服务器的脉搏</string>
+    <string name="hero_subtitle">直连 Java 与基岩版服务器\n读取 MOTD、在线人数与响应速度。</string>
+    <string name="mode_java">Java 版</string>
+    <string name="mode_bedrock">基岩版</string>
+    <string name="address_label">服务器地址</string>
+    <string name="address_hint_java">play.example.com 或 IP:端口</string>
+    <string name="address_hint_bedrock">play.example.com 或 IP:端口</string>
+    <string name="query">查询</string>
+    <string name="querying">探测中</string>
+    <string name="paste">粘贴</string>
+    <string name="input_hint_java">默认 25565 · 支持域名与 SRV</string>
+    <string name="input_hint_bedrock">默认 19132 · UDP 直连</string>
+    <string name="input_hint_custom_port">已指定端口，将直接连接</string>
+    <string name="clear">清空</string>
+    <string name="recent_title">最近查询</string>
+    <string name="recent_subtitle">轻触即可再次探测</string>
+    <string name="empty_title">还没有留下足迹</string>
+    <string name="empty_body">查询成功的服务器会留在这里，下一次轻触即可重新探测。</string>
+    <string name="empty_badge">本地记录</string>
+
+    <string name="status_online">在线</string>
+    <string name="status_offline">离线</string>
+    <string name="status_checking">探测中</string>
+    <string name="loading_title">正在敲响服务器的大门…</string>
+    <string name="loading_java">建立 Java SLP 连接</string>
+    <string name="loading_bedrock">发送 RakNet 探测包</string>
+    <string name="loading_srv">解析 SRV 记录</string>
+
+    <string name="result_java_edition">Java Edition</string>
+    <string name="result_bedrock_edition">Bedrock Edition</string>
+    <string name="result_players">在线玩家</string>
+    <string name="result_latency">响应</string>
+    <string name="result_version">版本</string>
+    <string name="result_capacity">服务器容量</string>
+    <string name="result_sample">玩家样本</string>
+    <string name="result_sample_empty">服务器没有公开玩家样本</string>
+    <string name="result_protocol">协议 %1$d</string>
+    <string name="result_secure_chat">安全聊天</string>
+    <string name="result_modded">模组服务端</string>
+    <string name="result_map">地图</string>
+    <string name="result_gamemode">模式</string>
+    <string name="result_server_id">服务器 ID</string>
+    <string name="action_requery">重新探测</string>
+    <string name="action_copy">复制状态</string>
+    <string name="action_share">分享</string>
+    <string name="capacity_of">%1$d / %2$d 个位置</string>
+    <string name="latency_ms">%1$d ms</string>
+    <string name="players_count">%1$d 位玩家在线</string>
+    <string name="result_undisclosed">未公开</string>
+
+    <string name="footer_line">结果由目标服务器实时返回 · 无需登录</string>
+    <string name="footer_protocol">Java SLP  ·  Bedrock RakNet  ·  v1.0.0</string>
+
+    <string name="error_empty">先告诉我服务器地址吧。</string>
+    <string name="error_host">找不到这个服务器，请检查域名或网络连接。</string>
+    <string name="error_timeout">连接超时，服务器可能正忙或端口未开放。</string>
+    <string name="error_refused">连接被拒绝，请确认端口是否正确。</string>
+    <string name="error_bedrock_timeout">没有收到基岩版响应，请确认端口（默认 19132）以及服务器是否在线。</string>
+    <string name="error_network">网络不可用，请检查 Wi-Fi 或移动数据。</string>
+    <string name="error_generic">查询失败：%1$s</string>
+    <string name="error_protocol">服务器返回了无法识别的数据。</string>
+    <string name="error_invalid_port">端口必须介于 1 和 65535 之间。</string>
+    <string name="error_invalid_host">服务器地址格式不正确。</string>
+
+    <string name="toast_copy_done">状态已复制到剪贴板</string>
+    <string name="toast_paste_empty">剪贴板里没有可用的地址</string>
+    <string name="toast_removed">已从最近查询中移除</string>
+    <string name="toast_saved">已保存到最近查询</string>
+    <string name="dialog_clear_title">清空最近查询？</string>
+    <string name="dialog_clear_message">只会删除本机的查询记录，不会影响服务器。</string>
+    <string name="dialog_cancel">取消</string>
+    <string name="dialog_clear">清空记录</string>
+    <string name="copy_header">方块探针 · 服务器状态</string>
+    <string name="share_subject">Minecraft 服务器状态</string>
+</resources>

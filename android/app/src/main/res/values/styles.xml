@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.CubeProbe.Base" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:colorEdgeEffect">@color/accent</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:forceDarkAllowed">false</item>
+    </style>
+
+    <style name="Theme.CubeProbe" parent="Theme.CubeProbe.Base" />
+
+    <style name="TextEyebrow">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:letterSpacing">0.16</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TextSectionTitle">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TextBodyMuted">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingExtra">3dp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+</resources>
