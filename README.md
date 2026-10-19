@@ -98,6 +98,16 @@ Windows x86/x64 独立 EXE 需要分别用 32/64 位 Python 3.8 + PyInstaller 5.
 - 基岩版状态包不返回玩家样本；SRV 依赖 DoH。
 - 本项目为非官方工具，与 Mojang / Microsoft 无关联。
 
+## Code signing policy
+
+**Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org).**
+
+- Committers/reviewers: [@sunaiyun](https://github.com/sunaiyun)
+- Approvers: [@sunaiyun](https://github.com/sunaiyun)
+- Windows binaries are built from this repository by GitHub Actions and submitted to SignPath for Authenticode signing.
+- Full policy: [CODE_SIGNING_POLICY.md](CODE_SIGNING_POLICY.md)
+- SignPath application notes: [SIGNPATH_APPLICATION.md](SIGNPATH_APPLICATION.md)
+
 ## 许可证
 
 源码采用 [MIT License](LICENSE)。第三方运行时与依赖的许可证见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

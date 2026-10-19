@@ -71,7 +71,7 @@ chmod +x CubeProbe.command
 
 ### iOS
 
-用 Xcode 打开 `cube-ios/CubeProbe.xcodeproj`，选择自己的 Team 后运行。iOS 应用必须在 macOS + Xcode 中编译和签名；当前 Windows 环境无法产出 IPA，工程源码已提供。
+用 Xcode 打开 `../ios/CubeProbe.xcodeproj`，选择自己的 Team 后运行；或使用仓库根目录的 GitHub Actions 工作流生成未签名 IPA。详见 `../ios/NO-MAC.md`。
 
 ## 构建
 
@@ -80,16 +80,18 @@ chmod +x CubeProbe.command
 必须分别用对应架构的 Python 构建。本项目使用 Python 3.8.10 + PyInstaller 5.13.2：
 
 ```powershell
-# 32 位
+# 32 位（从 desktop 目录运行；specpath 会让相对资源路径失效，因此资源/版本文件用绝对路径）
 py-x86\python.exe -m PyInstaller --noconfirm --clean --onefile --windowed `
-  --name CubeProbe-x86 --icon assets/icon.ico `
-  --add-data "assets;assets" --distpath windows-build/x86/dist `
+  --name CubeProbe-x86 --icon "$PWD\assets\icon.ico" `
+  --version-file "$PWD\packaging\version_info.txt" `
+  --add-data "$PWD\assets;assets" --distpath windows-build/x86/dist `
   --workpath windows-build/x86/work --specpath windows-build/x86/spec gui.py
 
 # 64 位
 py-x64\python.exe -m PyInstaller --noconfirm --clean --onefile --windowed `
-  --name CubeProbe-x64 --icon assets/icon.ico `
-  --add-data "assets;assets" --distpath windows-build/x64/dist `
+  --name CubeProbe-x64 --icon "$PWD\assets\icon.ico" `
+  --version-file "$PWD\packaging\version_info.txt" `
+  --add-data "$PWD\assets;assets" --distpath windows-build/x64/dist `
   --workpath windows-build/x64/work --specpath windows-build/x64/spec gui.py
 ```
 

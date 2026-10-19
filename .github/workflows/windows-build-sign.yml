@@ -1,0 +1,131 @@
+﻿name: Windows x86/x64 build
+
+on:
+  workflow_dispatch:
+    inputs:
+      sign:
+        description: "Submit built EXEs to SignPath after the build"
+        type: boolean
+        default: false
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  build:
+    name: Build unsigned Windows EXEs
+    runs-on: windows-2022
+    outputs:
+      artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Python 3.8.10 x86 and x64
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $installers = @(
+            @{ Arch = "x86"; Url = "https://www.python.org/ftp/python/3.8.10/python-3.8.10.exe";  Dir = "$env:RUNNER_TEMP\py38-x86" },
+            @{ Arch = "x64"; Url = "https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe"; Dir = "$env:RUNNER_TEMP\py38-x64" }
+          )
+          foreach ($item in $installers) {
+            $exe = Join-Path $env:RUNNER_TEMP "python-3.8.10-$($item.Arch).exe"
+            Invoke-WebRequest -Uri $item.Url -OutFile $exe -UseBasicParsing
+            if (Test-Path $item.Dir) { Remove-Item $item.Dir -Recurse -Force }
+            New-Item -ItemType Directory -Force -Path $item.Dir | Out-Null
+            $proc = Start-Process -FilePath $exe -Wait -PassThru -ArgumentList @(
+              "/quiet", "InstallAllUsers=0", "TargetDir=$($item.Dir)",
+              "Include_pip=1", "Include_tcltk=1", "Include_test=0",
+              "Shortcuts=0", "PrependPath=0", "AssociateFiles=0", "Include_launcher=0"
+            )
+            if ($proc.ExitCode -ne 0) { throw "Python $($item.Arch) installer failed: $($proc.ExitCode)" }
+            if (-not (Test-Path (Join-Path $item.Dir "python.exe"))) { throw "Python $($item.Arch) missing after install" }
+          }
+
+      - name: Install PyInstaller 5.13.2
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $pins = @(
+            "pyinstaller==5.13.2",
+            "pyinstaller-hooks-contrib==2023.10",
+            "packaging==23.2",
+            "altgraph==0.17.3",
+            "pefile==2023.2.7",
+            "pywin32-ctypes==0.2.2",
+            "importlib-metadata==6.8.0",
+            "zipp==3.15.0"
+          )
+          foreach ($arch in @("x86", "x64")) {
+            $python = Join-Path $env:RUNNER_TEMP "py38-$arch\python.exe"
+            & $python -m pip install --disable-pip-version-check --no-warn-script-location @pins
+            if ($LASTEXITCODE -ne 0) { throw "PyInstaller install failed for $arch" }
+          }
+
+      - name: Build CubeProbe x86 and x64
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          foreach ($arch in @("x86", "x64")) {
+            $python = Join-Path $env:RUNNER_TEMP "py38-$arch\python.exe"
+            $root = (Get-Location).Path
+            $dist = Join-Path $root "windows-build/$arch/dist"
+            $work = Join-Path $root "windows-build/$arch/work"
+            $spec = Join-Path $root "windows-build/$arch/spec"
+            $assets = Join-Path $root "desktop/assets"
+            $icon = Join-Path $root "desktop/assets/icon.ico"
+            $versionFile = Join-Path $root "desktop/packaging/version_info.txt"
+            $gui = Join-Path $root "desktop/gui.py"
+            New-Item -ItemType Directory -Force -Path $dist, $work, $spec | Out-Null
+            & $python -m PyInstaller `
+              --noconfirm --clean --onefile --windowed `
+              --name "CubeProbe-$arch" `
+              --icon $icon `
+              --version-file $versionFile `
+              --add-data "$assets;assets" `
+              --distpath $dist --workpath $work --specpath $spec `
+              $gui
+            if ($LASTEXITCODE -ne 0) { throw "PyInstaller build failed for $arch" }
+          }
+
+      - name: Upload unsigned EXEs
+        id: upload-unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: CubeProbe-windows-unsigned
+          path: |
+            windows-build/x86/dist/CubeProbe-x86.exe
+            windows-build/x64/dist/CubeProbe-x64.exe
+          if-no-files-found: error
+          retention-days: 14
+
+  sign:
+    name: Sign with SignPath
+    needs: build
+    if: ${{ inputs.sign }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit signing request
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: cubeprobe
+          signing-policy-slug: release-signing
+          artifact-configuration-slug: windows-exe
+          github-artifact-id: ${{ needs.build.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: signed
+          parameters: |
+            version: "1.0.0.0"
+
+      - name: Upload signed EXEs
+        uses: actions/upload-artifact@v4
+        with:
+          name: CubeProbe-windows-signed
+          path: signed/**
+          if-no-files-found: error
+          retention-days: 14
